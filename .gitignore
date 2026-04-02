@@ -15,6 +15,7 @@ ENV/
 *.mp3
 *.wav
 *.mp4
+!intro.mp4
 output_investment/
 assets/
 
