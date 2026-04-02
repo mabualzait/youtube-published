@@ -1,5 +1,10 @@
 # YouTube Publisher AI: Automated AI Video Generator & Publisher 🎬🤖
 
+[![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)](https://github.com/mabualzait/youtube-published)
+[![Python Version](https://img.shields.io/badge/Python-3.9+-yellow)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![YouTube: Togetherbudget](https://img.shields.io/badge/YouTube-Togetherbudget-red)](https://www.youtube.com/@togetherbudget)
+
 
 <p align="center">
   <video src="intro.mp4" width="100%" controls autoplay loop muted></video>
