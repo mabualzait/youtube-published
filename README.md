@@ -10,6 +10,11 @@
   <video src="intro.mp4" width="100%" controls autoplay loop muted></video>
 </p>
 
+## 🔗 Live Studio Demo
+> [!TIP]
+> **[Click here to Preview the Dashboard UI Layout](https://htmlpreview.github.io/?YOUR_GIST_URL_HERE)**
+> *(Note: This is a static mockup. To run the full agent, please follow the local installation guide below.)*
+
 An automated, end-to-end framework for synthesizing, generating, and publishing highly-retaining educational videos fully autonomously directly to YouTube. Engineered by **Malik Abualzait**, this faceless channel automation system perfectly handles custom topics driven by **Universal Language Models (OpenAI, Gemini, Ollama)** and **Glassmorphic UI Configurations**. 
 
 > **🔥 Production Proven:** This exact pipeline is currently actively utilized in production by Malik Abualzait to power and auto-publish content for the [Togetherbudget](https://www.youtube.com/@togetherbudget) YouTube channel alongside several other fully automated faceless channels!
