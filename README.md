@@ -12,7 +12,7 @@
 
 ## 🔗 Live Studio Demo
 > [!TIP]
-> **[Click here to Preview the Dashboard UI Layout](https://htmlpreview.github.io/?YOUR_GIST_URL_HERE)**
+> **[Click here to Preview the Dashboard UI Layout](https://htmlpreview.github.io/?https://gist.github.com/mabualzait/d014a9b619ff5a6f0b06a7dea3c560f6)**
 > *(Note: This is a static mockup. To run the full agent, please follow the local installation guide below.)*
 
 An automated, end-to-end framework for synthesizing, generating, and publishing highly-retaining educational videos fully autonomously directly to YouTube. Engineered by **Malik Abualzait**, this faceless channel automation system perfectly handles custom topics driven by **Universal Language Models (OpenAI, Gemini, Ollama)** and **Glassmorphic UI Configurations**. 
