@@ -1,0 +1,26 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environments
+.env
+.venv/
+env/
+venv/
+ENV/
+
+# Output and temp files
+*.mp3
+*.wav
+*.mp4
+output_investment/
+assets/
+
+# Credentials and state
+token_*.json
+client_secret.json
+state.json
+progress.json
+history.json

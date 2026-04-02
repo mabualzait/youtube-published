@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Youtube Generator and Publisher AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #9b4dff;
+            --secondary: #ff3366;
+            --bg-dark: #0a0a12;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f0f0f0;
+            --text-muted: #a0a0b0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(155, 77, 255, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(255, 51, 102, 0.15), transparent 25%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            0% { filter: drop-shadow(0 0 10px rgba(155,77,255,0.4)); }
+            100% { filter: drop-shadow(0 0 20px rgba(255,51,102,0.6)); }
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .tab-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: linear-gradient(135deg, rgba(155,77,255,0.8), rgba(255,51,102,0.8));
+            box-shadow: 0 4px 15px rgba(155,77,255,0.3);
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .glass-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 25px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 18px 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(155,77,255,0.3);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-magic {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(155, 77, 255, 0.4);
+        }
+
+        .btn-magic:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 35px rgba(255, 51, 102, 0.5);
+        }
+
+        .btn-magic:active {
+            transform: scale(0.98);
+        }
+
+        .btn-magic::after {
+            content: '';
+            position: absolute;
+            top: -50%; right: -50%; bottom: -50%; left: -50%;
+            background: linear-gradient(to bottom, rgba(229, 172, 142, 0), rgba(255,255,255,0.3) 50%, rgba(229, 172, 142, 0));
+            transform: rotateZ(60deg) translate(-5em, 7.5em);
+            animation: sheen 3s infinite;
+        }
+
+        @keyframes sheen {
+            100% { transform: rotateZ(60deg) translate(1em, -9em); }
+        }
+        
+        .btn-save {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--glass-border);
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            float: right;
+        }
+        
+        .btn-save:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: var(--primary);
+        }
+
+        /* Progress Card */
+        #progressCard {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .phase-badge {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 6px;
+            position: relative;
+        }
+        
+        .progress-fill::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        #message_text {
+            color: var(--text-muted);
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        /* Gallery */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .video-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        .thumbnail-container {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #111;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .thumbnail-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .video-card:hover .thumbnail-container img {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #fff;
+            line-height: 1.4;
+        }
+
+        .card-content a {
+            display: inline-block;
+            background: rgba(255, 51, 102, 0.2);
+            color: #ff3366;
+            text-decoration: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border: 1px solid rgba(255, 51, 102, 0.4);
+        }
+
+        .card-content a:hover {
+            background: #ff3366;
+            color: white;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            transform: translateX(200%);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+        }
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Youtube Generator</h1>
+        <p class="subtitle">AI-Powered Production & Publisher AI</p>
+    </header>
+
+    <nav>
+        <button class="tab-btn active" onclick="switchTab('generator')">Studio Generator</button>
+        <button class="tab-btn" onclick="switchTab('gallery')">Video Archive</button>
+        <button class="tab-btn" onclick="switchTab('settings')">Configuration</button>
+    </nav>
+
+    <!-- Generator Panel -->
+    <div id="generator" class="glass-panel active">
+        <h2>Launch Production</h2>
+        <div class="input-group">
+            <label for="topic">YouTube Video Topic / Title (Leave blank to use internal trending list)</label>
+            <input type="text" id="topic" placeholder="e.g. The Hidden Economics of Open Source Intelligence">
+        </div>
+        
+        <button class="btn-magic" id="generateBtn" onclick="triggerGenerate()">✨ Synthesize Video Pipeline ✨</button>
+
+        <div id="progressCard" style="opacity: 0.5;">
+            <div class="progress-header">
+                <div>Status: <span id="run_status" style="color:var(--text-muted);">Idle</span></div>
+                <div class="phase-badge" id="phase_badge">STANDBY</div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress_fill"></div>
+            </div>
+            <div id="message_text">Awaiting command...</div>
+        </div>
+    </div>
+
+    <!-- Gallery Panel -->
+    <div id="gallery" class="glass-panel">
+        <h2>Published Videos</h2>
+        <div class="video-grid" id="video_grid">
+            <!-- Populated by JS -->
+        </div>
+    </div>
+    
+    <!-- Settings Panel -->
+    <div id="settings" class="glass-panel clearfix">
+        <h2>API Configurations & Platform Settings</h2>
+        
+        <!-- LLM Setup -->
+        <h3 style="margin-top:20px; color:var(--primary); font-size: 1.3rem;">🧠 AI Brain Configuration</h3>
+        
+        <div class="input-group" style="margin-top:10px;">
+            <label for="provider_preset">Quick Setup Template (Local Ollama, OpenAI, Gemini)</label>
+            <select id="provider_preset" style="width:100%; padding: 15px; border-radius: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: #fff; font-size: 1.1rem; margin-bottom: 15px;" onchange="applyPreset()">
+                <option value="ollama">Ollama (Local Network)</option>
+                <option value="openai">OpenAI (GPT-4o, etc)</option>
+                <option value="gemini">Google Gemini (Gemini 1.5 Pro)</option>
+                <option value="custom">Custom Endpoint (v1/chat/completions)</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="llm_url">Base Endpoint URL</label>
+            <input type="text" id="llm_url" placeholder="http://localhost:11434/v1/chat/completions">
+        </div>
+
+        <div class="input-group">
+            <label for="llm_model">Model Identifier</label>
+            <input type="text" id="llm_model" placeholder="llama3.1:8b">
+        </div>
+        
+        <div class="input-group">
+            <label for="llm_api_key">API Key (Leave blank if local)</label>
+            <input type="text" id="llm_api_key" placeholder="Bearer Token...">
+        </div>
+        
+        <!-- YouTube & Visuals Setup -->
+        <h3 style="margin-top:40px; color:var(--primary); font-size: 1.3rem;">🎬 Visuals & Publisher Configuration</h3>
+        
+        <div class="input-group" style="margin-top:10px;">
+            <label for="pexels_key">Pexels API Key</label>
+            <input type="text" id="pexels_key" placeholder="Enter your 56 character Pexels API Key">
+            <p style="color:var(--text-muted); font-size: 0.9rem; margin-top:5px;">Get it free via <a href="https://www.pexels.com/api/" target="_blank" style="color:var(--secondary);">Pexels API</a>.</p>
+        </div>
+        
+        <div class="input-group">
+            <label for="client_secret">Google OAuth 'client_secret.json' Payload</label>
+            <textarea id="client_secret" placeholder='{ "installed": { "client_id": "...", ... } }'></textarea>
+            
+            <div style="background: rgba(255, 51, 102, 0.1); border-left: 3px solid var(--secondary); padding: 15px; margin-top: 15px; border-radius: 4px;">
+                <h4 style="color:#fff; margin-bottom: 5px;">How to authenticate with YouTube:</h4>
+                <ol style="margin-left: 20px; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">
+                    <li>Head to Google Cloud Console, enable "YouTube Data API v3".</li>
+                    <li>Create OAuth 2.0 Credentials (Desktop App) and download the JSON.</li>
+                    <li>Paste the raw JSON content directly into the text area above and Save.</li>
+                    <li><b>IMPORTANT:</b> Open the terminal on your server and manually run <code>python auth_youtube_agent.py</code> once to sign in. It will generate a permanent <code>token_youtube.json</code> authorizing this machine!</li>
+                </ol>
+            </div>
+        </div>
+        
+        <button class="btn-save" style="margin-top:20px;" onclick="saveConfig()">Save All Configurations</button>
+    </div>
+</div>
+
+<div class="toast" id="toast">Saved Successfully!</div>
+
+<script>
+    function switchTab(tabId) {
+        document.querySelectorAll('.glass-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => {
+             b.classList.remove('active');
+             if(b.getAttribute('onclick').includes(tabId)) b.classList.add('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        if(tabId === 'gallery') loadGallery();
+        if(tabId === 'settings') loadConfig();
+    }
+    
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    function applyPreset() {
+        const p = document.getElementById("provider_preset").value;
+        const url = document.getElementById("llm_url");
+        const model = document.getElementById("llm_model");
+        
+        if(p === "ollama") {
+            url.value = "http://localhost:11434/v1/chat/completions";
+            model.value = "llama3.1:8b";
+        } else if(p === "openai") {
+            url.value = "https://api.openai.com/v1/chat/completions";
+            model.value = "gpt-4o-mini";
+        } else if(p === "gemini") {
+            url.value = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
+            model.value = "gemini-1.5-flash";
+        }
+    }
+
+    async function loadConfig() {
+        try {
+            const r = await fetch('/api/config');
+            const data = await r.json();
+            document.getElementById('pexels_key').value = data.pexels_key || "";
+            document.getElementById('client_secret').value = data.client_secret_json || "";
+            document.getElementById('llm_url').value = data.llm_url || "http://localhost:11434/v1/chat/completions";
+            document.getElementById('llm_model').value = data.llm_model || "llama3.1:8b";
+            document.getElementById('llm_api_key').value = data.llm_api_key || "";
+        } catch(e) { console.error(e); }
+    }
+
+    async function saveConfig() {
+        const payload = {
+            pexels_key: document.getElementById('pexels_key').value.trim(),
+            client_secret_json: document.getElementById('client_secret').value.trim(),
+            llm_url: document.getElementById('llm_url').value.trim(),
+            llm_model: document.getElementById('llm_model').value.trim(),
+            llm_api_key: document.getElementById('llm_api_key').value.trim(),
+        };
+        try {
+            const r = await fetch('/api/config', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+            if(r.ok) showToast("Configurations Saved!");
+            else showToast("Error saving configs!");
+        } catch(e) { showToast("Network Error!"); }
+    }
+
+    async function triggerGenerate() {
+        const btn = document.getElementById("generateBtn");
+        const topic = document.getElementById("topic").value.trim();
+        const payload = topic ? { topic: topic } : {};
+        
+        btn.disabled = true;
+        btn.innerHTML = "Initializing...";
+        
+        try {
+            const response = await fetch('/api/generate', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: Object.keys(payload).length > 0 ? JSON.stringify(payload) : "{}"
+            });
+            if (response.ok) {
+                showToast("Pipeline Initiated!");
+            } else {
+                const err = await response.json();
+                alert("Cannot start: " + err.detail);
+            }
+        } catch (e) {
+            alert("Error connecting to server.");
+        }
+    }
+
+    async function loadProgress() {
+        try {
+            const response = await fetch('/api/progress');
+            const data = await response.json();
+            
+            const btn = document.getElementById("generateBtn");
+            const card = document.getElementById("progressCard");
+            const stat = document.getElementById("run_status");
+            const phase = document.getElementById("phase_badge");
+            const msg = document.getElementById("message_text");
+            const fill = document.getElementById("progress_fill");
+
+            if (data.is_running) {
+                btn.disabled = true;
+                btn.innerHTML = "Engine Running... ⚙️";
+                card.style.opacity = "1";
+                stat.innerHTML = "<span style='color:#00ffcc;'>Live</span>";
+            } else {
+                btn.disabled = false;
+                btn.innerHTML = "✨ Synthesize Video Pipeline ✨";
+                card.style.opacity = "0.5";
+                stat.innerHTML = "<span style='color:var(--text-muted);'>Idle</span>";
+            }
+
+            phase.innerText = data.phase || "STANDBY";
+            msg.innerText = data.message || "Ready for orders.";
+
+            let pct = 0;
+            if (data.total > 0) {
+                pct = Math.round((data.current / data.total) * 100);
+            } else if (data.phase === "Complete") {
+                pct = 100;
+            }
+            fill.style.width = pct + "%";
+
+        } catch (e) {
+            console.log("Progress error");
+        }
+    }
+
+    async function loadGallery() {
+        const grid = document.getElementById("video_grid");
+        try {
+            const response = await fetch('/api/videos');
+            const history = await response.json();
+            grid.innerHTML = "";
+            if (history.length === 0) {
+                grid.innerHTML = "<p style='color: var(--text-muted);'>No videos published yet. Head to the Generator!</p>";
+                return;
+            }
+            history.forEach(item => {
+                let folderSlug = item.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+                if (folderSlug === "") folderSlug = "investment";
+                
+                const card = document.createElement("div");
+                card.className = "video-card";
+                card.innerHTML = `
+                    <div class="thumbnail-container">
+                        <img src="/thumbnails/${folderSlug}/${item.thumbnail}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' preserveAspectRatio=\\'xMidYMid slice\\' focusable=\\'false\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'#333\\'/><text x=\\'50%\\' y=\\'50%\\' fill=\\'#777\\' dy=\\'.3em\\' text-anchor=\\'middle\\'>Thumbnail Pending</text></svg>'">
+                    </div>
+                    <div class="card-content">
+                        <h3>${item.title}</h3>
+                        <a href="${item.url}" target="_blank">Watch on YouTube 🡕</a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        } catch (e) {
+            grid.innerHTML = "<p>Error loading archive.</p>";
+        }
+    }
+
+    // Auto-poll progress every 2s
+    setInterval(loadProgress, 2000);
+    // Initial loads
+    loadProgress();
+</script>
+
+</body>
+</html>
